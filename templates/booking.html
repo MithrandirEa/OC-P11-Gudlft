@@ -1,8 +1,10 @@
+<!-- TODO [#1] : Empêcher la surréservation (overbooking)
+     Détail : Le formulaire ne vérifie pas que les places demandées sont disponibles.
+     Lien   : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1 -->
+<!-- TODO [#4] : Limiter à 12 places par compétition par club
+     Détail : Ajouter une contrainte max=12 et une validation côté serveur.
+     Lien   : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/4 -->
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Booking for {{competition['name']}} || GUDLFT</title>
 </head>
 <body>
     <h2>{{competition['name']}}</h2>
@@ -10,7 +12,7 @@
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id=""/>
+        <label for="places">How many places?</label><input type="number" name="places" id="places" min="1" max="{{ competition['numberOfPlaces'] }}"/>
         <button type="submit">Book</button>
     </form>
 </body>
