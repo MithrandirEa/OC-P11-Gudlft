@@ -9,7 +9,7 @@
 
 ## Issues ouvertes
 
-- [ ] [#1](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1) — Bug : Empêcher la surréservation (overbooking) _(fichiers : `server.py`, `templates/booking.html`)_
+- [X] [#1](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1) — Bug : Empêcher la surréservation (overbooking) _(fichiers : `server.py`, `templates/booking.html`)_
   - La route `/purchasePlaces` ne vérifie pas que les places demandées sont disponibles. Un utilisateur peut saisir n'importe quel nombre et décrémenter les places en négatif.
 
 - [ ] [#2](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/2) — Bug : Les points du club ne sont pas déduits lors d'une réservation _(fichiers : `server.py`)_

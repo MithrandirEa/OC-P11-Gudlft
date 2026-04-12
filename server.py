@@ -55,9 +55,6 @@ def book(competition, club):
                                competitions=competitions)
 
 
-# TODO [#1] : Empêcher la surréservation (overbooking)
-# Détail : Vérifier que les places demandées ne dépassent pas les places disponibles dans la compétition.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1
 # TODO [#2] : Déduire les points du club lors de la réservation
 # Détail : Chaque place réservée coûte 1 point ; le solde du club doit être mis à jour.
 # Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/2
@@ -72,7 +69,17 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    competition['numberOfPlaces'] = int(competition['numberOfPlaces'])-placesRequired
+    
+    # Vérification du nombre de places demandées (fix issue #1) 
+    # TODO: erase comment after merge
+    if placesRequired > int(competition['numberOfPlaces']):
+        flash('Not enough places available.')
+        return render_template('booking.html',
+                               club=club,
+                               competition=competition)
+
+    competition['numberOfPlaces'] = (int(competition['numberOfPlaces'])
+                                     - placesRequired)
     flash('Great-booking complete!')
     return render_template('welcome.html',
                            club=club,
