@@ -69,9 +69,7 @@ def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
-    
-    # Vérification du nombre de places demandées (fix issue #1) 
-    # TODO: erase comment after merge
+
     if placesRequired > int(competition['numberOfPlaces']):
         flash('Not enough places available.')
         return render_template('booking.html',
@@ -80,6 +78,9 @@ def purchasePlaces():
 
     competition['numberOfPlaces'] = (int(competition['numberOfPlaces'])
                                      - placesRequired)
+    # Soustraction des points du club
+    # TODO: erase comment after merge
+    club['points'] = (int(club['points']) - placesRequired)
     flash('Great-booking complete!')
     return render_template('welcome.html',
                            club=club,
