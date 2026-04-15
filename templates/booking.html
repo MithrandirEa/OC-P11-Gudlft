@@ -9,7 +9,9 @@
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <label for="places">How many places?</label><input type="number" name="places" id="places" min="1" max="{{ [club['points']|int, competition['numberOfPlaces']|int]|min }}"/>
+        <!-- Ajout de la contrainte max -->
+        <!-- TODO: erase after merge -->
+        <label for="places">How many places?</label><input type="number" name="places" id="places" min="1" max="{{ [MAX_BOOKABLE_PLACES, club['points']|int, competition['numberOfPlaces']|int]|min }}"/>
         <button type="submit">Book</button>
     </form>
 </body>

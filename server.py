@@ -2,6 +2,7 @@ import json
 from flask import Flask, render_template, request, redirect, flash, url_for
 from datetime import datetime
 
+MAX_BOOKABLE_PLACES = 12
 
 def loadClubs():
     with open('clubs.json') as c:
@@ -33,8 +34,6 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = [club for club in clubs if club['email'] == request.form['email']][0]
-    # Passage de la date au template
-    # TODO: erase after merge
     return render_template('welcome.html',
                            club=club,
                            competitions=competitions,
@@ -49,8 +48,6 @@ def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
 
-    # Vérification de la date de la compétition
-    # TODO: erase after merge
     if datetime.strptime(foundCompetition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
         flash('Cette compétition est déjà passée, vous ne pouvez pas réserver de places.')
         return render_template('welcome.html',
@@ -76,6 +73,13 @@ def purchasePlaces():
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
 
+    # Vérification que le nombre de places demandées ne dépasse pas le maximum autorisé
+    # TODO: erase after merge
+    if placesRequired > MAX_BOOKABLE_PLACES:
+        flash(f'Vous ne pouvez pas réserver plus de {MAX_BOOKABLE_PLACES} places pour une même compétition.')
+        return render_template('booking.html',
+                               club=club,
+                               competition=competition)
     if placesRequired > int(competition['numberOfPlaces']):
         flash('Not enough places available.')
         return render_template('booking.html',
