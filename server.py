@@ -28,7 +28,7 @@ def index():
 
 # TODO [#7] : Gérer les emails invalides / inconnus
 # Détail : Une erreur 500 est levée si l'email saisi ne correspond à aucun club connu.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/7
+# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/7
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = [club for club in clubs if club['email'] == request.form['email']][0]
@@ -37,9 +37,9 @@ def showSummary():
                            competitions=competitions)
 
 
-# TODO [#5] : Interdire la réservation pour les compétitions passées
+# TODO [#4] : Interdire la réservation pour les compétitions passées
 # Détail : Les compétitions dont la date est antérieure à aujourd'hui ne doivent pas être réservables.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/5
+# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/4
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
@@ -55,15 +55,9 @@ def book(competition, club):
                                competitions=competitions)
 
 
-# TODO [#2] : Déduire les points du club lors de la réservation
-# Détail : Chaque place réservée coûte 1 point ; le solde du club doit être mis à jour.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/2
-# TODO [#3] : Empêcher l'utilisation de plus de points que disponibles
-# Détail : Un club ne peut pas réserver plus de places que son solde de points actuel.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/3
-# TODO [#4] : Limiter à 12 places maximum par compétition par club
+# TODO [#5] : Limiter à 12 places maximum par compétition par club
 # Détail : Un club ne peut pas réserver plus de 12 places pour une même compétition.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/4
+# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/5
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
@@ -75,11 +69,16 @@ def purchasePlaces():
         return render_template('booking.html',
                                club=club,
                                competition=competition)
+    # Limite au nombre de point disponible pour le club
+    # TODO: erase after merge
+    if placesRequired > int(club['points']):
+        flash('Not enough points available.')
+        return render_template('booking.html',
+                               club=club,
+                               competition=competition)
 
     competition['numberOfPlaces'] = (int(competition['numberOfPlaces'])
                                      - placesRequired)
-    # Soustraction des points du club
-    # TODO: erase comment after merge
     club['points'] = (int(club['points']) - placesRequired)
     flash('Great-booking complete!')
     return render_template('welcome.html',
@@ -87,9 +86,9 @@ def purchasePlaces():
                            competitions=competitions)
 
 
-# TODO [#6] : Ajouter une page publique affichant le tableau des points des clubs
-# Détail : Créer une route et un template permettant de consulter les points de tous les clubs sans connexion.
-# Lien    : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/6
+# TODO [#2] : Ajouter un tableau de bord des points des clubs
+# Détail : Créer une route et un template permettant de consulter les points de tous les clubs.
+# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/2
 
 
 @app.route('/logout')

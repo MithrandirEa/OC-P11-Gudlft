@@ -1,35 +1,28 @@
 # Suivi des issues — Namie
 
-> Dernière mise à jour : 2026-04-12 (nettoyage des TODOs redondants)
-
-> ⚠️ Les issues ci-dessous sont issues du brief officiel du projet OpenClassrooms
-> ([OpenClassrooms-Student-Center/Python_Testing](https://github.com/OpenClassrooms-Student-Center/Python_Testing)).
-> Aucun outil GitHub API n'étant disponible dans cette session, les numéros d'issues
-> correspondent aux éléments documentés dans le brief pédagogique du projet Gudlft.
+> Dernière mise à jour : 2026-04-15
 
 ## Issues ouvertes
 
-- [X] [#1](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/1) — Bug : Empêcher la surréservation (overbooking) _(fichiers : `server.py`, `templates/booking.html`)_
-  - La route `/purchasePlaces` ne vérifie pas que les places demandées sont disponibles. Un utilisateur peut saisir n'importe quel nombre et décrémenter les places en négatif.
+- [ ] [#2](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/2) — FEATURE: Implement Points Display Board _(fichiers : `server.py`, `templates/welcome.html`)_
+  - Une secrétaire connectée devrait pouvoir voir la liste des clubs et leur solde de points actuel. Aucune route ni template n'existe pour afficher ce tableau.
 
-- [ ] [#2](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/2) — Bug : Les points du club ne sont pas déduits lors d'une réservation _(fichiers : `server.py`)_
-  - Après une réservation, `club['points']` n'est pas mis à jour. Les points doivent diminuer de 1 par place réservée.
+- [ ] [#4](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/4) — BUG: Booking places in past competitions _(fichiers : `server.py`, `templates/booking.html`)_
+  - Les compétitions passées ne devraient pas être réservables. Un message d'erreur doit s'afficher ; les compétitions passées restent visibles mais sans possibilité de réservation.
 
-- [ ] [#3](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/3) — Bug : Empêcher l'utilisation de plus de points que le solde disponible _(fichiers : `server.py`)_
-  - Un club peut réserver autant de places qu'il le souhaite, même si son solde de points est insuffisant (règle : 1 place = 1 point).
+- [ ] [#5](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/5) — BUG: Clubs shouldn't be able to book more than 12 places per competition _(fichiers : `server.py`, `templates/booking.html`)_
+  - Un club ne peut pas réserver plus de 12 places pour une même compétition. L'interface et le serveur doivent bloquer toute tentative dépassant cette limite.
 
-- [ ] [#4](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/4) — Bug : Limiter à 12 places maximum par compétition par club _(fichiers : `server.py`, `templates/booking.html`)_
-  - Aucune validation n'empêche un club de réserver plus de 12 places pour une même compétition.
-
-- [ ] [#5](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/5) — Bug : Les compétitions passées sont encore réservables _(fichiers : `server.py`, `templates/welcome.html`)_
-  - Les compétitions dont la date est antérieure à la date actuelle apparaissent avec un lien de réservation actif.
-
-- [ ] [#6](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/6) — Fonctionnalité : Tableau public des points des clubs _(fichiers : `server.py`, `templates/welcome.html`)_
-  - Aucune route ni template n'existe pour afficher les points de tous les clubs de manière publique (sans connexion).
-
-- [ ] [#7](https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/7) — Bug : Erreur 500 sur email invalide ou inconnu _(fichiers : `server.py`)_
-  - Si l'email saisi sur la page d'accueil ne correspond à aucun club, une `IndexError` non gérée produit une erreur 500.
+- [ ] [#7](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/7) — ERROR: Entering an unknown email crashes the app _(fichiers : `server.py`)_
+  - Si l'email saisi ne correspond à aucun club, l'application plante (IndexError). Une erreur explicite doit être affichée à la place.
 
 ## Issues résolues
 
-_(Aucune issue résolue pour l'instant dans ce suivi.)_
+- [x] [#1](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/1) — BUG: Clubs should not be able to book more than the competition places available _(fichiers : `server.py`)_
+  - La route `/purchasePlaces` vérifie désormais que le nombre de places demandées ne dépasse pas les places disponibles pour la compétition.
+
+- [x] [#3](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/3) — BUG: Point updates are not reflected _(fichiers : `server.py`)_
+  - Les points du club sont correctement déduits après une réservation (`club['points'] -= placesRequired`).
+
+- [x] [#6](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/6) — BUG: Clubs should not be able to use more than their points allowed _(fichiers : `server.py`)_
+  - La route `/purchasePlaces` vérifie que le club dispose d'un solde de points suffisant avant de valider la réservation.
