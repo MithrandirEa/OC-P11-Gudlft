@@ -1,5 +1,6 @@
 import json
 from flask import Flask, render_template, request, redirect, flash, url_for
+from datetime import datetime
 
 
 def loadClubs():
@@ -32,9 +33,12 @@ def index():
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
     club = [club for club in clubs if club['email'] == request.form['email']][0]
+    # Passage de la date au template
+    # TODO: erase after merge
     return render_template('welcome.html',
                            club=club,
-                           competitions=competitions)
+                           competitions=competitions,
+                           now=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
 # TODO [#4] : Interdire la réservation pour les compétitions passées
@@ -44,12 +48,20 @@ def showSummary():
 def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
     foundCompetition = [c for c in competitions if c['name'] == competition][0]
+
+    # Vérification de la date de la compétition
+    # TODO: erase after merge
+    if datetime.strptime(foundCompetition['date'], '%Y-%m-%d %H:%M:%S') < datetime.now():
+        flash('Cette compétition est déjà passée, vous ne pouvez pas réserver de places.')
+        return render_template('welcome.html',
+                               club=foundClub,
+                               competitions=competitions)
     if foundClub and foundCompetition:
         return render_template('booking.html',
                                club=foundClub,
                                competition=foundCompetition)
     else:
-        flash("Something went wrong-please try again")
+        flash("Une erreur est survenue, veuillez vérifier les informations saisies.")
         return render_template('welcome.html',
                                club=club,
                                competitions=competitions)
@@ -69,8 +81,6 @@ def purchasePlaces():
         return render_template('booking.html',
                                club=club,
                                competition=competition)
-    # Limite au nombre de point disponible pour le club
-    # TODO: erase after merge
     if placesRequired > int(club['points']):
         flash('Not enough points available.')
         return render_template('booking.html',
