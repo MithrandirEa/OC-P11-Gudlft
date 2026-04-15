@@ -28,21 +28,18 @@ def index():
     return render_template('index.html')
 
 
-# TODO [#7] : Gérer les emails invalides / inconnus
-# Détail : Une erreur 500 est levée si l'email saisi ne correspond à aucun club connu.
-# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/7
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
-    club = [club for club in clubs if club['email'] == request.form['email']][0]
-    return render_template('welcome.html',
-                           club=club,
-                           competitions=competitions,
+    # Utilisation de next() pour trouver le club correspondant à l'email fourni, ou None si aucun club n'est trouvé
+    # TODO: erase after merge
+    club = next((c for c in clubs if c['email'] == request.form['email']), None)
+    if club is None:
+        flash("Désolé, cet email n'a pas été trouvé.")
+        return redirect(url_for('index'))
+    return render_template('welcome.html', club=club, competitions=competitions,
                            now=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 
-# TODO [#4] : Interdire la réservation pour les compétitions passées
-# Détail : Les compétitions dont la date est antérieure à aujourd'hui ne doivent pas être réservables.
-# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/4
 @app.route('/book/<competition>/<club>')
 def book(competition, club):
     foundClub = [c for c in clubs if c['name'] == club][0]
@@ -64,17 +61,12 @@ def book(competition, club):
                                competitions=competitions)
 
 
-# TODO [#5] : Limiter à 12 places maximum par compétition par club
-# Détail : Un club ne peut pas réserver plus de 12 places pour une même compétition.
-# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/5
 @app.route('/purchasePlaces', methods=['POST'])
 def purchasePlaces():
     competition = [c for c in competitions if c['name'] == request.form['competition']][0]
     club = [c for c in clubs if c['name'] == request.form['club']][0]
     placesRequired = int(request.form['places'])
 
-    # Vérification que le nombre de places demandées ne dépasse pas le maximum autorisé
-    # TODO: erase after merge
     if placesRequired > MAX_BOOKABLE_PLACES:
         flash(f'Vous ne pouvez pas réserver plus de {MAX_BOOKABLE_PLACES} places pour une même compétition.')
         return render_template('booking.html',

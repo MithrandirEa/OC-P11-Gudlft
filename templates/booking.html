@@ -1,6 +1,3 @@
-<!-- TODO [#4] : Limiter à 12 places par compétition par club
-     Détail : Ajouter une contrainte max=12 et une validation côté serveur.
-     Lien   : https://github.com/OpenClassrooms-Student-Center/Python_Testing/issues/4 -->
 <html lang="en">
 </head>
 <body>
@@ -9,8 +6,6 @@
     <form action="/purchasePlaces" method="post">
         <input type="hidden" name="club" value="{{club['name']}}">
         <input type="hidden" name="competition" value="{{competition['name']}}">
-        <!-- Ajout de la contrainte max -->
-        <!-- TODO: erase after merge -->
         <label for="places">How many places?</label><input type="number" name="places" id="places" min="1" max="{{ [MAX_BOOKABLE_PLACES, club['points']|int, competition['numberOfPlaces']|int]|min }}"/>
         <button type="submit">Book</button>
     </form>
