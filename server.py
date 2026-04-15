@@ -30,8 +30,6 @@ def index():
 
 @app.route('/showSummary', methods=['POST'])
 def showSummary():
-    # Utilisation de next() pour trouver le club correspondant à l'email fourni, ou None si aucun club n'est trouvé
-    # TODO: erase after merge
     club = next((c for c in clubs if c['email'] == request.form['email']), None)
     if club is None:
         flash("Désolé, cet email n'a pas été trouvé.")
@@ -91,11 +89,9 @@ def purchasePlaces():
                            club=club,
                            competitions=competitions)
 
-
-# TODO [#2] : Ajouter un tableau de bord des points des clubs
-# Détail : Créer une route et un template permettant de consulter les points de tous les clubs.
-# Lien    : https://github.com/MithrandirEa/OC-P11-Gudlft/issues/2
-
+@app.route('/clubs')
+def clubs_board():
+    return render_template('clubs.html', clubs=clubs)
 
 @app.route('/logout')
 def logout():
