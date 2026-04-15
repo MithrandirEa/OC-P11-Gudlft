@@ -10,10 +10,10 @@
 - [X] [#4](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/4) — BUG: Booking places in past competitions _(fichiers : `server.py`, `templates/booking.html`)_
   - Les compétitions passées ne devraient pas être réservables. Un message d'erreur doit s'afficher ; les compétitions passées restent visibles mais sans possibilité de réservation.
 
-- [ ] [#5](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/5) — BUG: Clubs shouldn't be able to book more than 12 places per competition _(fichiers : `server.py`, `templates/booking.html`)_
+- [X] [#5](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/5) — BUG: Clubs shouldn't be able to book more than 12 places per competition _(fichiers : `server.py`, `templates/booking.html`)_
   - Un club ne peut pas réserver plus de 12 places pour une même compétition. L'interface et le serveur doivent bloquer toute tentative dépassant cette limite.
 
-- [ ] [#7](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/7) — ERROR: Entering an unknown email crashes the app _(fichiers : `server.py`)_
+- [X] [#7](https://github.com/MithrandirEa/OC-P11-Gudlft/issues/7) — ERROR: Entering an unknown email crashes the app _(fichiers : `server.py`)_
   - Si l'email saisi ne correspond à aucun club, l'application plante (IndexError). Une erreur explicite doit être affichée à la place.
 
 ## Issues résolues
